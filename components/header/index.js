@@ -2,6 +2,7 @@ import { withAuth } from "../with-auth"
 import Menu from "../menu"
 import styles from "./styles.module.css"
 import { Fragment, useState } from 'react'
+import Link from 'next/link'
 import {
   Dialog,
   DialogPanel,
@@ -114,15 +115,15 @@ function Header() {
             </Transition>
           </Popover>
 
-          <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
-            Features
-          </a>
-          <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
-            Marketplace
-          </a>
-          <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
-            Company
-          </a>
+          <Link href="/" className="text-sm font-semibold leading-6 text-gray-900">
+            Home
+          </Link>
+          <Link href="/profile" className="text-sm font-semibold leading-6 text-gray-900">
+            Profile
+          </Link>
+          <Link href="/users" className="text-sm font-semibold leading-6 text-gray-900">
+            Users
+          </Link>
         </PopoverGroup>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
           <a href="/profile" className="text-sm font-semibold leading-6 text-gray-900">
