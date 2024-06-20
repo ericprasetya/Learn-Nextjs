@@ -15,6 +15,8 @@ export default [
       "react/react-in-jsx-scope": "off",
       "react/prop-types": "off",
       "no-unsafe-optional-chaining": "off",
+      "no-empty": "off",
+      "no-unused-vars": "off",
     },
   },
 ];
