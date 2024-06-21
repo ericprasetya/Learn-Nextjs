@@ -1,5 +1,7 @@
-import Layout from "@/layout";
+import dynamic from "next/dynamic";
 import { useEffect } from "react";
+
+const LayoutComponent = dynamic(() => import("@/layout"));
 
 export default function Main({ children }) {
 
@@ -12,9 +14,9 @@ export default function Main({ children }) {
 
   return (
     <>
-      <Layout metaTitle="Home">
+      <LayoutComponent metaTitle="Home">
         <h1>Home</h1>
-      </Layout>
+      </LayoutComponent>
     </>
   );
 }
