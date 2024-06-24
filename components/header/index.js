@@ -115,11 +115,11 @@ function Header() {
             </Transition>
           </Popover>
 
-          <Link href="/" className="text-sm font-semibold leading-6 text-gray-900">
-            Home
+          <Link href="/notes" className="text-sm font-semibold leading-6 text-gray-900">
+            Notes
           </Link>
-          <Link href="/profile" className="text-sm font-semibold leading-6 text-gray-900">
-            Profile
+          <Link href="/posts" className="text-sm font-semibold leading-6 text-gray-900">
+            Posts
           </Link>
           <Link href="/users" className="text-sm font-semibold leading-6 text-gray-900">
             Users
