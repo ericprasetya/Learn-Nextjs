@@ -58,6 +58,21 @@ export default function Notes() {
     fetchData();
   }, []);
 
+  const handleDelete = async (id) => {
+    try {
+      const response = await fetch(`https://service.pace-unv.cloud/api/notes/delete/${id}`, {
+        method: "DELETE",
+      });
+      const result = await response.json();
+      console.log("result => ", result);
+      if(result.success == true) {
+        router.reload()
+      }
+    } catch (error) {
+      
+    }
+  }
+
   console.log("notes => ", notes);
   return (
     <>
@@ -78,10 +93,10 @@ export default function Notes() {
                       <Text>{note.description}</Text>
                     </CardBody>
                     <CardFooter>
-                      <Button flex="1" variant="ghost">
+                      <Button onClick={() => router.push(`/notes/edit/${note.id}`)} flex="1" variant="ghost">
                         Edit
                       </Button>
-                      <Button flex="1" colorScheme="red">
+                      <Button onClick={() => handleDelete(note.id)} flex="1" colorScheme="red">
                         Delete
                       </Button>
                     </CardFooter>
