@@ -38,73 +38,93 @@ import {
   Heading,
   Text,
   Button,
-  Box
+  Box,
+  Spinner,
 } from "@chakra-ui/react";
-import { useEffect } from "react";
-import { useState } from "react";
 import { useRouter } from "next/router";
+import { useQueries } from "@/hooks/useQueries";
 
 const LayoutComponent = dynamic(() => import("@/layout"));
 
 export default function Notes() {
-  const [notes, setNotes] = useState();
-  const router = useRouter()
-  useEffect(() => {
-    async function fetchData() {
-      const res = await fetch("https://service.pace-unv.cloud/api/notes");
-      const listNotes = await res.json();
-      setNotes(listNotes);
-    }
-    fetchData();
-  }, []);
+  const { data, isLoading } = useQueries({
+    prefixUrl: "https://service.pace-unv.cloud/api/notes",
+  });
+  const router = useRouter();
+  console.log("data => ", data);
 
   const handleDelete = async (id) => {
     try {
-      const response = await fetch(`https://service.pace-unv.cloud/api/notes/delete/${id}`, {
-        method: "DELETE",
-      });
+      const response = await fetch(
+        `https://service.pace-unv.cloud/api/notes/delete/${id}`,
+        {
+          method: "DELETE",
+        }
+      );
       const result = await response.json();
       console.log("result => ", result);
-      if(result.success == true) {
-        router.reload()
+      if (result.success == true) {
+        router.reload();
       }
-    } catch (error) {
-      
-    }
-  }
+    } catch (error) {}
+  };
 
-  console.log("notes => ", notes);
   return (
     <>
       <LayoutComponent metaTitle="Notes">
         <Box padding={5}>
           <Flex justifyContent="end">
-            <Button colorScheme="blue" onClick={() => router.push('/notes/add')}>Add Note</Button>
+            <Button
+              colorScheme="blue"
+              onClick={() => router.push("/notes/add")}
+            >
+              Add Note
+            </Button>
           </Flex>
-          <Flex>
-            <Grid templateColumns="repeat(3, 1fr)" gap={5}>
-              {notes?.data?.map((note) => (
-                <GridItem key={note.id}>
-                  <Card>
-                    <CardHeader>
-                      <Heading>{note.title}</Heading>
-                    </CardHeader>
-                    <CardBody>
-                      <Text>{note.description}</Text>
-                    </CardBody>
-                    <CardFooter>
-                      <Button onClick={() => router.push(`/notes/edit/${note.id}`)} flex="1" variant="ghost">
-                        Edit
-                      </Button>
-                      <Button onClick={() => handleDelete(note.id)} flex="1" colorScheme="red">
-                        Delete
-                      </Button>
-                    </CardFooter>
-                  </Card>
-                </GridItem>
-              ))}
-            </Grid>
-          </Flex>
+          {isLoading ? (
+            <Flex justifyContent="center" alignItems="center">
+              <Spinner
+                thickness="4px"
+                speed="0.65s"
+                emptyColor="gray.200"
+                color="blue.500"
+                size="xl"
+              />
+            </Flex>
+          ) : (
+            <Flex>
+              <Grid templateColumns="repeat(3, 1fr)" gap={5}>
+                {data?.data?.map((note) => (
+                  <GridItem key={note.id}>
+                    <Card>
+                      <CardHeader>
+                        <Heading>{note.title}</Heading>
+                      </CardHeader>
+                      <CardBody>
+                        <Text>{note.description}</Text>
+                      </CardBody>
+                      <CardFooter>
+                        <Button
+                          onClick={() => router.push(`/notes/edit/${note.id}`)}
+                          flex="1"
+                          variant="ghost"
+                        >
+                          Edit
+                        </Button>
+                        <Button
+                          onClick={() => handleDelete(note.id)}
+                          flex="1"
+                          colorScheme="red"
+                        >
+                          Delete
+                        </Button>
+                      </CardFooter>
+                    </Card>
+                  </GridItem>
+                ))}
+              </Grid>
+            </Flex>
+          )}
         </Box>
       </LayoutComponent>
     </>
