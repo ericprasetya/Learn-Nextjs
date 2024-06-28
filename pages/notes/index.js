@@ -43,13 +43,22 @@ import {
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useQueries } from "@/hooks/useQueries";
+import fetcher from "@/utils/fetcher";
+import useSWR from "swr";
 
 const LayoutComponent = dynamic(() => import("@/layout"));
 
 export default function Notes() {
-  const { data, isLoading } = useQueries({
-    prefixUrl: "https://service.pace-unv.cloud/api/notes",
-  });
+  const { data, error, isLoading } = useSWR(
+    'https://service.pace-unv.cloud/api/notes', 
+    fetcher,
+    {
+      revalidateOnFocus: true,
+    }
+  )
+  // const { data, isLoading } = useQueries({
+  //   prefixUrl: "https://service.pace-unv.cloud/api/notes",
+  // });
   const router = useRouter();
   console.log("data => ", data);
 
