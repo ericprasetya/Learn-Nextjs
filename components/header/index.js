@@ -23,6 +23,8 @@ import { useQueries } from '@/hooks/useQueries';
 import Cookies from 'js-cookie';
 import { useMutation } from '@/hooks/useMutation';
 import { useRouter } from 'next/router';
+import { useContext } from 'react';
+import { UserContext } from '@/context/userContext';
 
 const Links = [
   { name: 'Dashboard', path: '/' },
@@ -50,12 +52,7 @@ const NavLink = ({ path, children }) => {
 
 function Header() {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { data } = useQueries({
-    prefixUrl: "https://service.pace-unv.cloud/api/user/me",
-    headers: {
-      Authorization: "Bearer " + Cookies.get("user_token")
-    }
-  })
+  const userData = useContext(UserContext)
 
   const {mutate} = useMutation();
   const router = useRouter();
@@ -73,8 +70,6 @@ function Header() {
       router.push("/login");
     }
   }
-  console.log("data => ", data);
-
   return (
     <>
       <Box bg={useColorModeValue('gray.100', 'gray.900')} px={4}>
@@ -110,7 +105,7 @@ function Header() {
                     'https://images.unsplash.com/photo-1493666438817-866a91353ca9?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9'
                   }
                 />
-                <Text>{data?.data?.name}</Text>
+                <Text>{userData?.name}</Text>
               </MenuButton>
               <MenuList>
                 <MenuItem>Link 2</MenuItem>
