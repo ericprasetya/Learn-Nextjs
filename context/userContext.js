@@ -10,7 +10,7 @@ export function UserContextProvider({ children, ...props}) {
     headers: {
       Authorization: "Bearer " + Cookies.get("user_token"),
     },
-  });
+  }); 
   return (
     <UserContext.Provider value={ userData?.data || null } {...props}>
       {children}
